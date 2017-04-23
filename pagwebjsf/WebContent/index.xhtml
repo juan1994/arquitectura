@@ -10,17 +10,54 @@
 </h:head> 
 <h:body style="background-color:#2ECCFA;"> 
 <div>
-<h:form id ="test">
 
-<p:inputText value="#{new.name}">
 
-</p:inputText>
+<h:form>
+		
 
-<p:commandButton value="procesar" action="#{new.fuction()}">
+		<p:growl id="grow" life="3000" />
+		<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5"
+			columnClasses="label, value">
+			<p:outputLabel for="ldepartamentos" value="Departamento" />
+			<p:selectOneMenu id="ldepartamentos" value="#{principal.name}"
+				style="width:125px">
+				<p:ajax listener="#{principal.changeAction}" update="lciudades" />
+				<f:selectItem itemLabel="Seleccionar" itemValue="" />
+				<f:selectItems value="#{principal.departamentos}" />
+			</p:selectOneMenu>
+			<p:outputLabel for="lciudades" value="Ciudad" />
+			<p:selectOneMenu id="lciudades" value="#{principal.ciudadSel}"
+				style="width:125px">
+				<f:selectItem itemLabel="Seleccionar" itemValue="" />
+				<f:selectItems value="#{principal.ciudades}" />
+			</p:selectOneMenu>
+		</h:panelGrid>
+		<p:commandButton value="Agregar" id="ajax" update="grow, ltem"
+			actionListener="#{principal.buttonAction}" icon="ui-icon-check">
+			<f:attribute name="tems" value="#{principal.temperaturas}" />
+		</p:commandButton>
 
-</p:commandButton>	
-
-</h:form>
+		<p:carousel id="ltem" value="#{principal.temperaturas}"
+			headerText="Temperatura" var="tem" itemStyle="text-align:center"
+			responsive="true" style="margin-top: 15px; max-width:80%">
+			<p:panelGrid columns="2" style="width:100%;margin:10px 0px"
+				columnClasses="label,value" layout="grid"
+				styleClass="ui-panelgrid-blank">
+				
+					<p:graphicImage
+						value="#{tem.urlImage}"
+						height="100px" />
+					<p:commandButton title="Eliminar" id="remove" update="ltem"
+						actionListener="#{principal.eliminarAction}" icon="ui-icon-trash" Style="length=60px">
+						<f:attribute name="tem" value="#{tem}" />
+					</p:commandButton>
+				<h:outputText value="#{tem.departamentoNombre}" />
+				<h:outputText value="#{tem.ciudadNombre}" />
+				<h:outputText value="#{tem.temperatura} °C" />
+				<h:outputText value="#{tem.weather}" />
+			</p:panelGrid>
+		</p:carousel>
+	</h:form> 
 
 </div>
 </h:body> 
